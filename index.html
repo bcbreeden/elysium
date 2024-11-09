@@ -8,33 +8,20 @@
   <h1>Real-Time Updates</h1>
   <div id="updates">Loading...</div>
 
-  <script>
+  <script type="module">
     // Function to simulate a typing effect
-    function typeText(element, text, speed = 50) {
-      element.innerHTML = "";  // Clear existing content
-      let i = 0;
-
-      function type() {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-          setTimeout(type, speed);
-        }
-      }
-      type();
-    }
-
+    import { typeText } from './typingEffect.js';
 
     // Function to fetch updates from the server
     function fetchUpdates() {
-      fetch("/get-updates")
-        .then(response => response.text())
-        .then(data => {
+        fetch("/get-updates")
+            .then(response => response.text())
+            .then(data => {
             const updatesElement = document.getElementById("updates");
-            typeText(updatesElement, data);
-        })
-        .catch(error => console.error("Error fetching updates:", error));
-    }
+            typeText(updatesElement, data);  // typeText will now be globally available
+            })
+            .catch(error => console.error("Error fetching updates:", error));
+        }
 
     // Polling every 5 seconds
     setInterval(fetchUpdates, 5000);
