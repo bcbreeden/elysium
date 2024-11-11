@@ -42,7 +42,7 @@ def categorize_sentence(sentence):
             "bizarre", "fatal", "infuriate", "revolt", "outrage", "injustice", "shake", "demolition", "irregularity",
             "dismay", "discordant", "mutiny", "treacherous", "disloyalty", "transgression", "irate", "unforeseen",
             "disproportion", "fallible", "fractious", "reckless", "breakup", "nonconform", "displease", "ungoverned",
-            "disorganized", "scatter", "war", "danger"
+            "disorganized", "scatter", "war", "danger", "kill", "murder"
             ]
 
         lawful_keywords = [

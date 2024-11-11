@@ -27,7 +27,7 @@ def get_sources():
     return[response.status_code, response.json()['sources']]
 
 
-sources = ['bbc-news', 'abc-news', 'the-wall-street-journal']
+sources = ['bbc-news', 'abc-news', 'the-wall-street-journal','fox-news', 'associated-press', 'cnn']
 for source in sources:
     data = make_news_articles_api_call(source)[1]
     for article in data:
