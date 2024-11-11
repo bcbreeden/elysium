@@ -15,7 +15,7 @@ def make_news_articles_api_call(news_source):
         print(response.json())
     return[response.status_code, response.json()['articles']]
 
-def get_sources():
+def make_sources_api_call():
     api_key = constants.NEWS_API
     request_url = 'https://newsapi.org/v2/top-headlines/sources?apiKey={}'.format(api_key)
     response = requests.get(request_url)
