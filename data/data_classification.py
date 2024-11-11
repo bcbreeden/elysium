@@ -1,5 +1,5 @@
 def categorize_sentence(sentence):
-    
+
     chaotic_keywords = [
     "unrest", "crisis", "violence", "instability", "disaster", "turmoil", "clashes", "chaos", 
     "protests", "uprising", "panic", "emergency", "scandal", "conflict", "disruption", 
@@ -74,12 +74,10 @@ def categorize_sentence(sentence):
     lawful_score = sum(1 for word in lawful_keywords if word in sentence.lower())
     good_score = sum(1 for word in good_keywords if word in sentence.lower())
     evil_score = sum(1 for word in evil_keywords if word in sentence.lower())
-
-    score = {
+    
+    return {
         'chaotic_score': chaotic_score,
         'lawful_score': lawful_score,
         'good_score': good_score,
         'evil_score': evil_score
     }
-
-    return score
