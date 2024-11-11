@@ -7,42 +7,84 @@ from nltk.stem import WordNetLemmatizer
 def categorize_sentence(sentence):
     if isinstance(sentence, str):
         sentence = sentence.lower()
+        processed_text = _process_text(sentence)
+
         chaotic_keywords = [
-        "unrest", "crisis", "violence", "instability", "disaster", "turmoil", "clashes", "chaos", 
-        "protests", "uprising", "panic", "emergency", "scandal", "conflict", "disruption", 
-        "anarchy", "confusion", "escalation", "breakdown", "outrage", "catastrophe", "rebellion", 
-        "collapse", "mayhem", "disorder", "strife", "shock", "havoc", "upheaval", "alarm", 
-        "volatility", "riot", "rebellion", "revolt", "disturbance", "frenzy", "tumult", "lawlessness", 
-        "chaotic", "devastation", "explosion", "storm", "desperation", "fear", "danger", 
-        "incident", "accident", "trauma", "calamity", "insurgency", "tragedy", "violations", 
-        "rupture", "siege", "eruption", "wreckage", "collision", "flood", "tornado", "earthquake", 
-        "epidemic", "collapse", "burning", "bloodshed", "plague", "contagion", "blaze", "eruption", 
-        "meltdown", "scare", "disarray", "agitation", "uncertainty", "paranoia", "feud", "siege", 
-        "hostility", "misfortune", "rebuke", "intensity", "wreck", "chaotic", "confounding", 
-        "collapse", "coup", "subversion", "displacement", "hazard", "rage", "climax", 
-        "exodus", "scarcity", "deficiency", "crunch", "emergency", "tensions", "pressures", 
-        "assault", "bombardment", "occupation", "violations", "casualties"
-        ]
+            "anarchy", "turmoil", "havoc", "disarray", "confusion", "pandemonium", "uproar", "mayhem", "bedlam", "unrest",
+            "riot", "rebellion", "uprising", "insurgency", "disruption", "dysfunction", "tumult", "frenzy", "commotion",
+            "turbulence", "instability", "agitation", "chaos", "disorder", "conflict", "confound", "disturbance", "madness",
+            "rampage", "chaotic", "disorganize", "shamble", "scramble", "clutter", "derange", "falter", "distrust", "schism",
+            "disorientation", "bedraggled", "maelstrom", "tempest", "cacophony", "anarchic", "disrupt", "overturn",
+            "subversion", "jumbled", "tangle", "irregular", "fluctuation", "frenetic", "ruin", "muddle", "messy",
+            "disjointed", "scatter", "antagonism", "violence", "disband", "disobedience", "incoherent", "discord",
+            "rebellious", "unruly", "clash", "unpredictable", "haphazard", "volatile", "wreckage", "frantic", "negligent",
+            "hazardous", "unsound", "upheaval", "misrule", "mutiny", "insurrection", "fractious", "reckless", "ruthless",
+            "destruction", "hostility", "fallout", "wrath", "fury", "vexation", "unlawful", "catastrophic", "upset",
+            "rupture", "corrupt", "mismanagement", "disheveled", "fragmented", "transgress", "lawlessness", "disruptive",
+            "irreversible", "erratic", "discordance", "sabotage", "peril", "atrocious", "ramshackle", "discontent",
+            "antipathy", "rampant", "explosive", "interruption", "subdue", "domination", "treachery", "betrayal",
+            "indignation", "nuisance", "antagonist", "deform", "quagmire", "detonate", "fracture", "fissure", "brawl",
+            "carnage", "unleash", "erupt", "eruption", "combust", "uproarious", "shockwave", "collide", "abrasion",
+            "atrophy", "insubordination", "instigate", "riotous", "protest", "cluttered", "distort", "mishap", "clumsy",
+            "pillage", "outburst", "implode", "explode", "retribution", "unsettle", "apocalyptic", "abrasive", "hostile",
+            "vandalism", "desecration", "disillusion", "disharmony", "wreck", "brash", "violate", "transgression",
+            "clamorous", "menace", "feud", "revulsion", "unease", "alarm", "alarmist", "fiasco", "deception", "misconduct",
+            "hypocrisy", "tension", "warlike", "treason", "ramble", "perilous", "confront", "intimidate", "unhinged",
+            "belligerent", "affliction", "menacing", "strife", "conflicting", "grievance", "betray", "defiance", "dissent",
+            "provocation", "distress", "controversy", "hysteria", "derail", "incitement", "instability", "flawed",
+            "discordant", "fracture", "antagonize", "chaotically", "subversive", "unravel", "ravage", "discordance",
+            "animosity", "agitate", "aggravation", "relapse", "paranoia", "recklessness", "shock", "abnormal", "confusing",
+            "perplex", "imbalance", "misunderstanding", "critique", "tumultuous", "struggle", "rivalry", "tribulation",
+            "friction", "lawless", "outlaw", "turmoil", "abrasive", "dispute", "overwhelm", "exasperation", "sabotage",
+            "defy", "opposition", "collapse", "shock", "breakdown", "disrepair", "disperse", "affliction", "provoke",
+            "infraction", "ruinous", "falter", "confrontation", "havoc", "unorganized", "violator", "imperfection",
+            "incomprehension", "aberration", "misfit", "overload", "panic", "assault", "fragmentation", "grievous",
+            "bizarre", "fatal", "infuriate", "revolt", "outrage", "injustice", "shake", "demolition", "irregularity",
+            "dismay", "discordant", "mutiny", "treacherous", "disloyalty", "transgression", "irate", "unforeseen",
+            "disproportion", "fallible", "fractious", "reckless", "breakup", "nonconform", "displease", "ungoverned",
+            "disorganized", "scatter", "war", "danger"
+            ]
 
         lawful_keywords = [
-        "order", "law", "structure", "regulation", "compliance", "rules", "governance", "authority", 
-        "justice", "stability", "control", "peace", "legislation", "policy", "rights", "constitution", 
-        "standard", "norms", "code", "system", "legal", "protocol", "approval", "sanction", "authorization", 
-        "permissible", "jurisdiction", "enforcement", "procedure", "formality", "official", "mandate", 
-        "discipline", "security", "oversight", "authorization", "permitted", "supervision", "legitimacy", 
-        "due process", "harmony", "consent", "certification", "fairness", "reliability", "legality", 
-        "agreement", "treaty", "pact", "orderliness", "conformity", "prescribed", "licensed", "constitutional", 
-        "adherence", "ratified", "provision", "recognized", "accepted", "customary", "governing", "consistent", 
-        "established", "safeguard", "authorized", "settlement", "resolution", "protection", "deterrent", 
-        "defense", "consensus", "guidelines", "framework", "structure", "jurisprudence", "code of conduct", 
-        "procedural", "moderation", "neutrality", "precedent", "civility", "propriety", "discretion", 
-        "arrangement", "institutional", "rectitude", "rationality", "balance", "stewardship", "accountability", 
-        "deliberation", "orderly", "rule-bound", "unbiased", "even-handed", "responsibility", "policing", 
-        "validation", "approbation", "ratification", "cooperation", "integrity", "sanctioned", "prescriptive"
-        ]
-        chaotic_score = sum(1 for word in chaotic_keywords if word in sentence)
-        lawful_score = sum(1 for word in lawful_keywords if word in sentence)
-        sentiment_score = _sentiment_analysis(sentence)
+            "law", "order", "stability", "peace", "justice", "authority", "regulation", "discipline", "structure",
+            "harmony", "control", "governance", "security", "protection", "consistency", "rule", "legitimacy", "balance",
+            "fairness", "clarity", "predictability", "certainty", "compliance", "obedience", "legal", "system", "principle",
+            "right", "responsibility", "morality", "upright", "civility", "ethic", "sanction", "safeguard", "guideline",
+            "standard", "orderly", "respect", "safety", "accountability", "reliability", "uniformity", "command", "custom",
+            "honesty", "integrity", "propriety", "rectitude", "prudence", "decency", "cohesion", "unity", "fidelity",
+            "honor", "regularity", "process", "consensus", "jurisdiction", "enforcement", "provision", "welfare", "peaceful",
+            "regulate", "restraint", "prevention", "supervision", "guardian", "arbitration", "decision", "precedent",
+            "composure", "tranquility", "obedient", "statute", "codify", "charter", "foundation", "constitution", "counsel",
+            "trustworthy", "permanence", "government", "civil", "soundness", "consent", "legalize", "authorize", "precept",
+            "edict", "mandate", "validity", "authorization", "clarification", "certification", "protocol", "ordinance",
+            "legislation", "firmness", "settlement", "cooperation", "peacekeeping", "deterrence", "loyalty", "resolution",
+            "pact", "accord", "council", "truce", "respectability", "policy", "validation", "organization", "procedural",
+            "settle", "deterrent", "restoration", "obligation", "uniform", "regulated", "governed", "strength", "supervise",
+            "sanctioned", "abidance", "concord", "submission", "orthodoxy", "consensual", "docility", "conservative",
+            "acceptable", "grounded", "foundation", "civilization", "normative", "just", "adherence", "faithfulness",
+            "safeguard", "sanctity", "repose", "serenity", "defense", "support", "corroborate", "regularize",
+            "authorization", "organized", "align", "endorse", "adhere", "justified", "discipline", "docile", "warrant",
+            "legitimize", "confirm", "valid", "official", "backing", "anchored", "ground", "legitimate", "ratified",
+            "constitution", "bona fide", "back", "reliable", "binding", "protected", "defined", "solidified", "licensed",
+            "trusted", "rest", "goodwill", "guardianship", "backup", "protection", "repute", "standing", "strengthened",
+            "authority", "fundamental", "root", "persistence", "continuity", "perseverance", "tenacity", "unification",
+            "precedent", "inviolable", "true", "unchanged", "permanent", "durable", "robust", "immovable", "immutable",
+            "lawful", "customary", "preservation", "calm", "informed", "civilize", "consistent", "entrench", "immovable",
+            "agreement", "statutory", "preserve", "sustain", "justness", "conform", "uprightness", "systematize", "duty",
+            "civilian", "dignity", "mandated", "veracity", "certify", "respectful", "constant", "resolve", "dependable",
+            "foundation", "genuine", "responsible", "guarantee", "incorruptible", "settle", "reassurance", "solidify",
+            "compliant", "proven", "admissible", "codified", "status", "reputable", "regular", "underpin", "perpetuate",
+            "organized", "peacekeeper", "procedural", "validation", "legality", "balanced", "protect", "plausible",
+            "sound", "neutralize", "systemic", "approved", "ethical", "verified", "truth", "coherent", "neutral",
+            "affirm", "established", "soundly", "unified", "stabilize", "licensed", "legalism", "patriotism", "morale",
+            "authority", "guaranteed", "regulate", "truthful", "rational", "restoration", "documented", "credible",
+            "formalize", "policy", "absolute", "monitored", "ensure", "community", "secure"
+            ]
+
+
+        chaotic_score = sum(1 for word in chaotic_keywords if word in processed_text)
+        lawful_score = sum(1 for word in lawful_keywords if word in processed_text)
+        sentiment_score = _sentiment_analysis(processed_text)
 
         return {
             'chaotic_score': chaotic_score,
@@ -59,14 +101,16 @@ def categorize_sentence(sentence):
             'sentiment_score': 0.0
         }
 
-def _sentiment_analysis(sentence):
-    tokens = word_tokenize(sentence)
+def _sentiment_analysis(processed_text):
+    analyzer = SentimentIntensityAnalyzer()
+    score = analyzer.polarity_scores(processed_text)
+    return score['compound']
+
+def _process_text(text):
+    tokens = word_tokenize(text)
     filtered_tokens = [token for token in tokens if token not in stopwords.words('english')]
 
     lemmatizer = WordNetLemmatizer()
     lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
     processed_text = ' '.join(lemmatized_tokens)
-
-    analyzer = SentimentIntensityAnalyzer()
-    score = analyzer.polarity_scores(processed_text)
-    return score['compound']
+    return processed_text
