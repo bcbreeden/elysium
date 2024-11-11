@@ -1,5 +1,12 @@
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
 def categorize_sentence(sentence):
     if isinstance(sentence, str):
+        sentence = sentence.lower()
         chaotic_keywords = [
         "unrest", "crisis", "violence", "instability", "disaster", "turmoil", "clashes", "chaos", 
         "protests", "uprising", "panic", "emergency", "scandal", "conflict", "disruption", 
@@ -33,53 +40,14 @@ def categorize_sentence(sentence):
         "deliberation", "orderly", "rule-bound", "unbiased", "even-handed", "responsibility", "policing", 
         "validation", "approbation", "ratification", "cooperation", "integrity", "sanctioned", "prescriptive"
         ]
-
-        good_keywords = [
-        "kindness", "compassion", "empathy", "generosity", "charity", "honesty", "integrity", 
-        "justice", "forgiveness", "peace", "hope", "love", "joy", "altruism", "benevolence", 
-        "morality", "trust", "loyalty", "respect", "virtue", "honor", "grace", "mercy", 
-        "harmony", "faithfulness", "selflessness", "gentleness", "fairness", "responsibility", 
-        "goodwill", "humility", "modesty", "patience", "tolerance", "courage", "sincerity", 
-        "understanding", "upliftment", "truthfulness", "compassionate", "friendship", "care", 
-        "dedication", "helpfulness", "encouragement", "protection", "support", "nurturing", 
-        "wisdom", "gratitude", "hopefulness", "generous", "mindfulness", "positivity", 
-        "trustworthy", "devotion", "bravery", "reliability", "acceptance", "peaceful", 
-        "caring", "thoughtfulness", "uplifting", "faith", "charitable", "fidelity", "sympathy", 
-        "warmth", "nobility", "compassionate", "kind", "servitude", "truth", "responsiveness", 
-        "open-mindedness", "balance", "helpful", "innocence", "loyal", "encouraging", "uplifting", 
-        "benevolent", "courageous", "persistence", "redeeming", "optimism", "forbearing", 
-        "moral", "dignity", "equity", "inspiration", "redemption", "self-respect", "consideration", 
-        "trustworthiness", "inclusiveness", "faithful", "good-hearted", "uplifting", "steadfastness", 
-        "patriotism", "decency", "sacrificial", "well-being"
-        ]
-
-        evil_keywords = [
-        "hatred", "cruelty", "violence", "malice", "betrayal", "deception", "greed", "corruption", 
-        "oppression", "injustice", "manipulation", "selfishness", "intolerance", "harm", "destruction", 
-        "tyranny", "abuse", "dishonesty", "exploitation", "dishonor", "wrath", "revenge", "vengeance", 
-        "aggression", "domination", "hostility", "corrupt", "chaos", "fear", "terror", "brutality", 
-        "infamy", "deceit", "immorality", "sadism", "prejudice", "bigotry", "animosity", "vindictiveness", 
-        "ruthlessness", "subjugation", "hypocrisy", "envy", "spite", "despair", "pessimism", "malevolence", 
-        "wickedness", "murder", "crime", "betrayal", "darkness", "oppression", "fraud", "despotism", 
-        "manipulative", "heartless", "suffering", "paranoia", "disharmony", "sinister", "atrocity", 
-        "threat", "invasion", "theft", "defilement", "obsession", "injustice", "slander", "persecution", 
-        "disregard", "torment", "pain", "enslavement", "fearmongering", "distress", "malignant", "fiendish", 
-        "dread", "antagonism", "resentment", "bullying", "unforgiving", "scorn", "predator", "depravity", 
-        "infliction", "violator", "inhumanity", "merciless", "barbaric", "exploitative", "doom", 
-        "despicable", "retribution", "insidious", "oppressive", "sadistic", "vindictive", "villainy", 
-        "predatory", "treachery", "manipulative"
-        ]
-
-        chaotic_score = sum(1 for word in chaotic_keywords if word in sentence.lower())
-        lawful_score = sum(1 for word in lawful_keywords if word in sentence.lower())
-        good_score = sum(1 for word in good_keywords if word in sentence.lower())
-        evil_score = sum(1 for word in evil_keywords if word in sentence.lower())
+        chaotic_score = sum(1 for word in chaotic_keywords if word in sentence)
+        lawful_score = sum(1 for word in lawful_keywords if word in sentence)
+        sentiment_score = _sentiment_analysis(sentence)
 
         return {
             'chaotic_score': chaotic_score,
             'lawful_score': lawful_score,
-            'good_score': good_score,
-            'evil_score': evil_score
+            'sentiment_score': sentiment_score
         }
     # If sentence isn't a string, return zero for all scores.
     else:
@@ -88,6 +56,17 @@ def categorize_sentence(sentence):
         return {
             'chaotic_score': 0,
             'lawful_score': 0,
-            'good_score': 0,
-            'evil_score': 0
+            'sentiment_score': 0.0
         }
+
+def _sentiment_analysis(sentence):
+    tokens = word_tokenize(sentence)
+    filtered_tokens = [token for token in tokens if token not in stopwords.words('english')]
+
+    lemmatizer = WordNetLemmatizer()
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
+    processed_text = ' '.join(lemmatized_tokens)
+
+    analyzer = SentimentIntensityAnalyzer()
+    score = analyzer.polarity_scores(processed_text)
+    return score['compound']
