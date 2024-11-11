@@ -27,11 +27,11 @@ def make_sources_api_call():
     return[response.status_code, response.json()['sources']]
 
 
-sources = ['bbc-news', 'abc-news', 'the-wall-street-journal','fox-news', 'associated-press', 'cnn']
-for source in sources:
-    data = make_news_articles_api_call(source)[1]
-    for article in data:
-        print(article['title'])
-        print(categorize_sentence(article['title']))
+# sources = ['bbc-news', 'abc-news', 'the-wall-street-journal','fox-news', 'associated-press', 'cnn']
+# for source in sources:
+#     data = make_news_articles_api_call(source)[1]
+#     for article in data:
+#         print(article['title'])
+#         print(categorize_sentence(article['title']))
 
 
