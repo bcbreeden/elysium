@@ -16,7 +16,8 @@ def _create_tables():
         headline TEXT NOT NULL,
         chaotic_score INTEGER,
         lawful_score INTEGER,
-        sentiment_score REAL
+        sentiment_score REAL,
+        publish_date DATETIME
     )
     ''')
     print('Headlines table successfully constructed.')
