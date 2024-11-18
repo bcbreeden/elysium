@@ -1,4 +1,4 @@
-from data_classification import categorize_sentence, _sentiment_analysis
+from data_classification import score_sentence, _sentiment_analysis
 import constants
 import requests
 

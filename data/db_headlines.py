@@ -1,6 +1,6 @@
 import sqlite3
 from news_api import make_news_articles_api_call
-from data_classification import categorize_sentence
+from data_classification import score_sentence
 from datetime import datetime
 
 def insert_headlines():
@@ -11,7 +11,7 @@ def insert_headlines():
     for source in sources:
         data = make_news_articles_api_call(source)[1]
         for article in data:
-            headline_scores = categorize_sentence(article['title'])
+            headline_scores = score_sentence(article['title'])
             headline_id = _generate_id(article['title'])
             publish_date = _format_datetime(article['publishedAt'])
             insert_query = """

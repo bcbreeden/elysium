@@ -4,7 +4,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
-def categorize_sentence(sentence):
+def score_sentence(sentence):
     if isinstance(sentence, str):
         sentence = sentence.lower()
         processed_text = _process_text(sentence)
