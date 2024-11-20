@@ -85,7 +85,9 @@ def clean_category_data():
                             'COMEDY']
     df['category'] = df['category'].replace(categories_to_combine, 'GOOD NEWS')
 
+    save_path = os.path.join(current_dir, 'category_data.csv')
+    df.to_csv(save_path, index=False)
+
     category_counts = df['category'].value_counts()
-    df.to_csv('clean_category_data.csv', index=False)
     print('Data cleaning successful, category counts:')
     print(category_counts)

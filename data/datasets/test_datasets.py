@@ -1,11 +1,14 @@
 import unittest
-from .clean_category_data import *
+from .clean_category_data import clean_category_data
 import pandas as pd
+import os
 
 class TestDatasets(unittest.TestCase):
     def test_headline_data_clean(self):
         clean_category_data()
-        df = pd.read_csv('clean_category_data.csv')
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, 'category_data.csv')
+        df = pd.read_csv(file_path)
         expected_categories = [
             "POLITICS", 
             "WELLNESS", 
