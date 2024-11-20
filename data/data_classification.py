@@ -1,8 +1,10 @@
-import nltk
+import json
+from collections import Counter
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
+import pandas as pd
 
 def score_sentence(sentence):
     if isinstance(sentence, str):
@@ -114,3 +116,8 @@ def _process_text(text):
     lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
     processed_text = ' '.join(lemmatized_tokens)
     return processed_text
+
+def _categorize_title():
+    # TODO: finish functions to create a ml model here, use model to categorize a title passed in
+    data_df = pd.read_csv('datasets/clean_category_data.csv')
+    
